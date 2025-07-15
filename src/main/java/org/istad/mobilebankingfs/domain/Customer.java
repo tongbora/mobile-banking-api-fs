@@ -41,9 +41,14 @@ public class Customer {
 
     private Boolean isDeleted = false;
 
+    @ManyToOne
+    private Segment segment;
+
     @OneToMany(mappedBy = "customer")
     private List<Account> accounts;
 
-    @OneToOne(mappedBy = "customer")
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "kyc_id", referencedColumnName = "id")
     private KYC kyc;
 }

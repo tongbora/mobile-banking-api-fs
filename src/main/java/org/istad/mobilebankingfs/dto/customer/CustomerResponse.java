@@ -12,6 +12,8 @@ public record CustomerResponse(
         String gender,
         String email,
         String phoneNumber,
-        String remark
+        String remark,
+        SegmentResponse segment,
+        KYCResponse kyc
 ) {
 }

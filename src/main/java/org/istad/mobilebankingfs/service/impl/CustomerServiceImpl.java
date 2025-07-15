@@ -3,11 +3,15 @@ package org.istad.mobilebankingfs.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.istad.mobilebankingfs.domain.Customer;
+import org.istad.mobilebankingfs.domain.KYC;
+import org.istad.mobilebankingfs.domain.Segment;
 import org.istad.mobilebankingfs.dto.customer.CreateCustomerRequest;
 import org.istad.mobilebankingfs.dto.customer.CustomerResponse;
 import org.istad.mobilebankingfs.dto.customer.CustomerUpdate;
 import org.istad.mobilebankingfs.mapper.CustomerMapper;
 import org.istad.mobilebankingfs.repository.CustomerRepository;
+import org.istad.mobilebankingfs.repository.KYCRepository;
+import org.istad.mobilebankingfs.repository.SegmentRepository;
 import org.istad.mobilebankingfs.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,14 +23,39 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final SegmentRepository segmentRepository;
+    private final KYCRepository kycRepository;
 
     @Override
     public CustomerResponse createCustomer(CreateCustomerRequest request) {
-        if(customerRepository.existsByEmail(request.email())){
+        // check if customer already exist
+        if(customerRepository.existsByEmailAndPhoneNumber(request.email(), request.phoneNumber())
+                || kycRepository.existsByNationalCardId(request.nationalCardId())){
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Customer already exists.");
         }
-        return customerMapper.toCustomerResponse(customerRepository.save(customerMapper.fromCreateCustomerRequest(request)));
+
+        // get segment of customer
+        Segment segment = segmentRepository.findByName(request.segment().toLowerCase())
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Segment name not found.")
+        );
+        Customer customer = new Customer();
+        customer.setFullName(request.fullName());
+        customer.setGender(request.gender());
+        customer.setEmail(request.email());
+        customer.setPhoneNumber(request.phoneNumber());
+        customer.setRemark(request.remark());
+        KYC kyc = new KYC();
+        kyc.setIsVerified(false);
+        kyc.setNationalCardId(request.nationalCardId());
+        kyc.setIsDeleted(false);
+
+        customer.setKyc(kyc);
+        customer.setSegment(segment);
+
+
+        return customerMapper.toCustomerResponse(customerRepository.save(customer));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.istad.mobilebankingfs.dto.account;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 
 public record AccountRequest(

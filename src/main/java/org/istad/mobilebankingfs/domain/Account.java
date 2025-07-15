@@ -30,6 +30,8 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
 
+    private BigDecimal overLimit;
+
     private Boolean isDeleted = false;
 
     @ManyToOne

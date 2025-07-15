@@ -12,11 +12,13 @@ public class KYC {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // uuid
+
+    @Column(unique = true, length = 15)
     private String nationalCardId;
     private Boolean isVerified;
     private Boolean isDeleted;
 
-    @OneToOne
+    @OneToOne(mappedBy = "kyc")
     private Customer customer;
 
 }
