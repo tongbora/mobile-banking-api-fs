@@ -47,7 +47,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Account> accounts;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kyc_id", referencedColumnName = "id")
     private KYC kyc;

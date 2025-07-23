@@ -16,7 +16,6 @@ import org.istad.mobilebankingfs.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
@@ -45,13 +44,13 @@ public class AccountServiceImpl implements AccountService {
         Account account = new Account();
 
         // set over limit to account
-        if(customer.getSegment().getName().equals("regular")){
+        if(customer.getSegment().getName().equals("REGULAR")){
             account.setOverLimit(BigDecimal.valueOf(5000));
         }
-        else if(customer.getSegment().getName().equals("silver")){
+        else if(customer.getSegment().getName().equals("SILVER")){
             account.setOverLimit(BigDecimal.valueOf(10000));
         }
-        else if(customer.getSegment().getName().equals("gold")){
+        else if(customer.getSegment().getName().equals("GOLD")){
             account.setOverLimit(BigDecimal.valueOf(50000));
         }
         else{

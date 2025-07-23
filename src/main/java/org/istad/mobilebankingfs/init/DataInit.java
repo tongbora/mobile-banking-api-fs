@@ -34,13 +34,13 @@ public class DataInit {
 
         if(segmentRepository.count() < 1){
             Segment segment = new Segment();
-            segment.setName("gold");
+            segment.setName("GOLD");
 
             Segment segment2 = new Segment();
-            segment2.setName("silver");
+            segment2.setName("SILVER");
 
             Segment segment3 = new Segment();
-            segment3.setName("regular");
+            segment3.setName("REGULAR");
 
             segmentRepository.saveAll(
                     List.of(

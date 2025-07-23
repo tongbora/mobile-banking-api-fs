@@ -29,14 +29,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse createCustomer(CreateCustomerRequest request) {
         // check if customer already exist
-        if(customerRepository.existsByEmailAndPhoneNumber(request.email(), request.phoneNumber())
-                || kycRepository.existsByNationalCardId(request.nationalCardId())){
+        if(customerRepository.existsByEmail(request.email())){
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Customer already exists.");
+                    "Email already exists.");
+        }
+        if(customerRepository.existsByPhoneNumber(request.phoneNumber())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Phone number already exists.");
+        }
+        if(kycRepository.existsByNationalCardId(request.nationalCardId())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "National Card ID already exists.");
         }
 
         // get segment of customer
-        Segment segment = segmentRepository.findByName(request.segment().toLowerCase())
+        Segment segment = segmentRepository.findByName(request.segment().toUpperCase())
                 .orElseThrow(
                         () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Segment name not found.")
         );

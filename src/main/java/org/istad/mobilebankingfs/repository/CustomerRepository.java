@@ -11,6 +11,7 @@ public interface CustomerRepository
     boolean existsByEmailAndPhoneNumber(String email, String phoneNumber);
     boolean existsByUuid(String uuid);
     boolean existsByEmail(String email);
+    boolean existsByPhoneNumber(String phoneNumber);
 
     Optional<Customer> findByEmail(String email);
     Optional<Customer> findByPhoneNumber(String phoneNumber);
