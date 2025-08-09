@@ -95,6 +95,8 @@ public class KeycloakSecurityConfig {
                         .permitAll()
                         .requestMatchers("/media/**")
                         .permitAll()
+                        .requestMatchers("/api/v1/auth/register")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
         );
@@ -122,7 +124,6 @@ public class KeycloakSecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
